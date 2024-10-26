@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-    // Initialize the PocketBase app
     app := pocketbase.New()
 
     // Add the afterCreate hook to trigger Lambda for mentee registration
