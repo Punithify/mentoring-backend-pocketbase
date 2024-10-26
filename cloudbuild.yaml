@@ -30,7 +30,7 @@ steps:
         '--image',
         'us-east1-docker.pkg.dev/pocketbase-deployment/pocketbase-repo/pocketbase:latest',
         '--region',
-        'us-east1-',
+        'us-east1',
         '--platform',
         'managed',
         '--allow-unauthenticated',
