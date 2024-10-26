@@ -1,0 +1,38 @@
+steps:
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-east1-docker.pkg.dev/pocketbase-deployment/pocketbase-repo/pocketbase:latest',
+        '.',
+      ]
+
+  # Step 2: Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'us-east1-docker.pkg.dev/pocketbase-deployment/pocketbase-repo/pocketbase:latest',
+      ]
+
+  # Step 3: Deploy the container to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      [
+        'run',
+        'deploy',
+        'pocketbase-service',
+        '--image',
+        'us-east1-docker.pkg.dev/pocketbase-deployment/pocketbase-repo/pocketbase:latest',
+        '--region',
+        'us-east1-',
+        '--platform',
+        'managed',
+        '--allow-unauthenticated',
+      ]
+
+images:
+  - 'us-east1-docker.pkg.dev/pocketbase-deployment/pocketbase-repo/pocketbase:latest'
