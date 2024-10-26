@@ -10,7 +10,7 @@ import (
 func main() {
     app := pocketbase.New()
 
-    // Add the afterCreate hook to trigger Lambda for mentee registration
+    // Add the afterCreate hook to trigger Lambda for mentee registration (check)
     app.OnRecordAfterCreateRequest().Add(handlers.HandleMenteeRegistration(app))
 
     // Start the PocketBase app
