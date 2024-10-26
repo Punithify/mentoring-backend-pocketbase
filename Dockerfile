@@ -18,6 +18,7 @@ FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/pocketbase .
 
-EXPOSE 8090
+EXPOSE 8080
 
-CMD ["./pocketbase", "serve", "--http=0.0.0.0:8090"]
+# Use the PORT environment variable, defaulting to 8080
+CMD ["./pocketbase", "serve", "--http=0.0.0.0:${PORT:-8080}"]
