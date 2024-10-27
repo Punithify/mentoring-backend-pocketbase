@@ -17,11 +17,11 @@ func main() {
     // Check for PORT environment variable (default to 8090 if not set)
     port := os.Getenv("PORT")
     if port == "" {
-        port = "8080" // Default to 8090 for local development
+        port = "8080" // Default to 8080 for local development
     }
 
     // Set the port in the root command
-    app.RootCmd.SetArgs([]string{"serve", "--http=127.0.0.1:" + port})
+    app.RootCmd.SetArgs([]string{"serve", "--http=0.0.0.0:" + port})
 
     // Start the PocketBase app
     if err := app.Start(); err != nil {
