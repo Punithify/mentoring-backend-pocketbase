@@ -11,7 +11,6 @@ import (
 func main() {
     app := pocketbase.New()
 
-    // Add the afterCreate hook to trigger Lambda for mentee registration
     app.OnRecordAfterCreateRequest().Add(handlers.HandleMenteeRegistration(app))
 
     // Check for PORT environment variable (default to 8080 if not set)
