@@ -1,4 +1,3 @@
-# Use a Debian-based Golang image to build the application
 FROM golang:1.21-bullseye as builder
 
 WORKDIR /app
