@@ -1,5 +1,4 @@
-# Specify the platform to use x86_64 (amd64) architecture
-FROM --platform=linux/amd64 golang:1.21-bullseye as builder
+FROM golang:1.21-bullseye as builder
 
 WORKDIR /app
 
@@ -14,7 +13,7 @@ COPY . .
 RUN go build -o mentoring_backend main.go
 
 # Final image
-FROM --platform=linux/amd64 gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+FROM gcr.io/google.com/cloudsdktool/cloud-sdk:slim
 
 # Set working directory
 WORKDIR /root/
