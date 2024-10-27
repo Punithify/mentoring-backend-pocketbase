@@ -16,13 +16,19 @@ RUN go build -o mentoring_backend main.go
 # Final image
 FROM alpine:latest
 WORKDIR /root/
+
+# Install gcsfuse for mounting Google Cloud Storage
+RUN apk add --no-cache gcsfuse
+
+# Copy the built application
 COPY --from=builder /app/mentoring_backend .
 
-# Set environment variable for the port
+# Set environment variables for Google Cloud Storage bucket and port
+ENV BUCKET_NAME=my-pocketbase-data
 ENV PORT 8080
 
 # Expose the Cloud Run default port
 EXPOSE 8080
 
-# Start the application
-CMD ["./mentoring_backend"]
+# Mount the GCS bucket as a directory using gcsfuse
+CMD ["sh", "-c", "gcsfuse $BUCKET_NAME /root/data && ./mentoring_backend --dataDir=/root/data"]

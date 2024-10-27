@@ -21,7 +21,7 @@ func main() {
     }
 
     // Set the port in the root command
-    app.RootCmd.SetArgs([]string{"serve", "--http=0.0.0.0:" + port})
+    app.RootCmd.SetArgs([]string{"serve", "--http=127.0.0.1:" + port})
 
     // Start the PocketBase app
     if err := app.Start(); err != nil {
