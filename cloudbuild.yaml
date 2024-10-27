@@ -22,8 +22,7 @@ steps:
   # Step 3: Deploy the container to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
-    args:
-      [
+    args: [
         'run',
         'deploy',
         'pocketbase-service',
@@ -34,6 +33,9 @@ steps:
         '--platform',
         'managed',
         '--allow-unauthenticated',
+        '--project',
+        'pocketbase-deployment', # specify your project ID
+        # '--service-account', 'your-service-account@your-project-id.iam.gserviceaccount.com' # (optional) specify service account if needed
       ]
 
 images:
