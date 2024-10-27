@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"mentoring_backend/handlers" // Assuming your handler is in this directory
+	"mentoring_backend/handlers"
 	"os"
 
 	"github.com/pocketbase/pocketbase"
@@ -14,10 +14,10 @@ func main() {
     // Add the afterCreate hook to trigger Lambda for mentee registration
     app.OnRecordAfterCreateRequest().Add(handlers.HandleMenteeRegistration(app))
 
-    // Check for PORT environment variable (default to 8090 if not set)
+    // Check for PORT environment variable (default to 8080 if not set)
     port := os.Getenv("PORT")
     if port == "" {
-        port = "8080" // Default to 8080 for local development
+        port = "8080" // Default to 8080 for production
     }
 
     // Set the port in the root command

@@ -32,7 +32,7 @@ COPY --from=builder /app/mentoring_backend .
 ENV BUCKET_NAME=my-pocketbase-data
 ENV PORT 8080
 
-# Expose the Cloud Run default port
+# Expose the default Cloud Run port
 EXPOSE 8080
 
 # Mount the GCS bucket and start the application
