@@ -1,4 +1,5 @@
-FROM golang:1.21-bullseye as builder
+# Use the official Golang image with a compatible version
+FROM golang:1.21-alpine as builder
 
 WORKDIR /app
 
@@ -13,26 +14,15 @@ COPY . .
 RUN go build -o mentoring_backend main.go
 
 # Final image
-FROM gcr.io/google.com/cloudsdktool/cloud-sdk:slim
-
-# Set working directory
+FROM alpine:latest
 WORKDIR /root/
-
-# Add the gcsfuse repository and install gcsfuse
-RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-bullseye main" | tee /etc/apt/sources.list.d/gcsfuse.list \
-    && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-    && apt-get update \
-    && apt-get install -y gcsfuse
-
-# Copy the built application from the builder stage
 COPY --from=builder /app/mentoring_backend .
 
-# Set environment variables for Google Cloud Storage bucket and port
-ENV BUCKET_NAME=my-pocketbase-data
+# Set environment variable for the port
 ENV PORT 8080
 
-# Expose the default Cloud Run port
+# Expose the Cloud Run default port
 EXPOSE 8080
 
-# Mount the GCS bucket and start the application
-CMD ["sh", "-c", "gcsfuse $BUCKET_NAME /root/data && ./mentoring_backend --dataDir=/root/data"]
+# Start the application
+CMD ["./mentoring_backend"]
