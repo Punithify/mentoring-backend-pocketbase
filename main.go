@@ -17,7 +17,7 @@ func main() {
     // Check for PORT environment variable (default to 8090 if not set)
     port := os.Getenv("PORT")
     if port == "" {
-        port = "8090" // Default to 8090 for local development
+        port = "8080" // Default to 8090 for local development
     }
 
     // Set the port in the root command
