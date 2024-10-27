@@ -10,15 +10,19 @@ RUN go mod download
 # Copy the entire application code
 COPY . .
 
-# Build the application
+# Build the application, producing the mentoring_backend binary
 RUN go build -o mentoring_backend main.go
 
 # Final image
 FROM alpine:latest
 WORKDIR /root/
-COPY --from=builder /app/pocketbase .
+COPY --from=builder /app/mentoring_backend .
 
-EXPOSE 8090
+# Set environment variable for the port
+ENV PORT 8080
 
-# Use the PORT environment variable, defaulting to 8080
-CMD ["./mentoring_backend", "serve", "--http=0.0.0.0:${PORT:-8090}"]
+# Expose the Cloud Run default port
+EXPOSE 8080
+
+# Start the application
+CMD ["./mentoring_backend"]
