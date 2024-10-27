@@ -11,14 +11,14 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o pocketbase main.go
+RUN go build -o mentoring_backend main.go
 
 # Final image
 FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/pocketbase .
 
-EXPOSE 8080
+EXPOSE 8090
 
 # Use the PORT environment variable, defaulting to 8080
-CMD ["./mentoring_backend", "serve", "--http=0.0.0.0:${PORT:-8080}"]
+CMD ["./mentoring_backend", "serve", "--http=0.0.0.0:${PORT:-8090}"]
