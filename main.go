@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"mentoring_backend/handlers" // Assuming your handler is in this directory
+	"mentoring_backend/handlers"
 	"os"
 
 	"github.com/pocketbase/pocketbase"
