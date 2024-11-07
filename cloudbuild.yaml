@@ -1,7 +1,19 @@
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  machineType: 'E2_HIGHCPU_8' # Choose a suitable machine type if builds are large
+
 steps:
-  # Step 1: Build the Docker image
+  # Step 1: Download Go dependencies and cache them
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        mkdir -p /workspace/cache
+        export GOCACHE=/workspace/cache
+        go mod download
+
+  # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -11,7 +23,7 @@ steps:
         '.',
       ]
 
-  # Step 2: Push the image to Artifact Registry
+  # Step 3: Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -19,10 +31,11 @@ steps:
         'us-east1-docker.pkg.dev/pocketbase-deployment/pocketbase-repo/pocketbase:latest',
       ]
 
-  # Step 3: Deploy the container to Cloud Run
+  # Step 4: Deploy the container to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
-    args: [
+    args:
+      [
         'run',
         'deploy',
         'pocketbase-service',
@@ -34,9 +47,14 @@ steps:
         'managed',
         '--allow-unauthenticated',
         '--project',
-        'pocketbase-deployment', # specify your project ID
-        # '--service-account', 'your-service-account@your-project-id.iam.gserviceaccount.com' # (optional) specify service account if needed
+        'pocketbase-deployment',
       ]
 
+# Cache declaration
 images:
   - 'us-east1-docker.pkg.dev/pocketbase-deployment/pocketbase-repo/pocketbase:latest'
+
+# Declare volume caching for dependencies
+volumes:
+  - name: 'gocache'
+    path: '/workspace/cache'
